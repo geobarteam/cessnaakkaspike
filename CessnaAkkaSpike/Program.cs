@@ -34,8 +34,8 @@ namespace CessnaAkkaSpike
 
                 if (command == "exit")
                 {
-                    CessnaActorSystem.Terminate().Wait();
                     ColorConsole.WriteLineGray("Actor system shutdown");
+                    CessnaActorSystem.Terminate().Wait();
                     Console.ReadKey();
                     Environment.Exit(1);
                 }
