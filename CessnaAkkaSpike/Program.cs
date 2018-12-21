@@ -18,27 +18,44 @@ namespace CessnaAkkaSpike
 
             do
             {
-                Console.WriteLine();
-                Console.ForegroundColor = ConsoleColor.DarkGray;
-                ColorConsole.WriteLineGray("enter a command and hit enter");
-
-                var command = Console.ReadLine();
-                if (command.StartsWith("register"))
+                try
                 {
-                    string tenantName = command.Split(',')[1];
-                    string installerName = command.Split(',')[2];
+                    Console.WriteLine();
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    ColorConsole.WriteLineGray("enter a command and hit enter");
 
-                    var message = new PipelineMessage(tenantName, installerName);
-                    CessnaActorSystem.ActorSelection("/user/ProcessManager").Tell(message);
+                    var command = Console.ReadLine();
+                    if (command.StartsWith("register"))
+                    {
+                        string tenantName = command.Split(',')[1];
+                        string installerName = command.Split(',')[2];
+
+                        var message = new PipelineMessage(tenantName, installerName);
+                        CessnaActorSystem.ActorSelection("/user/ProcessManager").Tell(message);
+                    }
+
+                    if (command.StartsWith("approve"))
+                    {
+                        string tenantName = command.Split(',')[1];
+                        string installerName = command.Split(',')[2];
+
+                        var message = new ApproveMessage(installerName);
+                        CessnaActorSystem.ActorSelection("/user/ProcessManager/Pipeline" + tenantName + "/ApprovalForPRDActor").Tell(message);
+                    }
+
+                    if (command == "exit")
+                    {
+                        ColorConsole.WriteLineGray("Actor system shutdown");
+                        CessnaActorSystem.Terminate().Wait();
+                        Console.ReadKey();
+                        Environment.Exit(1);
+                    }
                 }
-
-                if (command == "exit")
+                catch (Exception e)
                 {
-                    ColorConsole.WriteLineGray("Actor system shutdown");
-                    CessnaActorSystem.Terminate().Wait();
-                    Console.ReadKey();
-                    Environment.Exit(1);
+                    ColorConsole.WriteMagenta(e.Message);
                 }
+               
             } while (true);
 
         }

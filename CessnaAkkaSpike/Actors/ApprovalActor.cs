@@ -21,16 +21,19 @@ namespace CessnaAkkaSpike.Actors
             Receive<ApproveMessage>(message => HandleApproveMessage(message));
         }
 
+       
+
         private void HandleApproveMessage(ApproveMessage message)
         {
             var pipelineMessage = _messagesToBeApproved[message.InstallerName];
             _messagesToBeApproved.Remove(message.InstallerName);
-            _outports.ToList().ForEach(actor => actor.Tell(message));
+            _outports.ToList().ForEach(actor => actor.Tell(new PipelineMessage(null, message.InstallerName)));
         }
 
         private void HandlePipelineMessage(PipelineMessage message)
         {
             _messagesToBeApproved.Add(message.InstallerName, message);
+            ColorConsole.WriteMagenta($"{DateTime.Now} - Approval waiting for '{ message.InstallerName }'");
         }
     }
 }

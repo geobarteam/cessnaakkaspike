@@ -24,6 +24,8 @@ namespace CessnaAkkaSpike.Actors
 
         private void HandleRegisterInstallerActor(PipelineMessage message)
         {
+
+            ColorConsole.WriteMagenta($"{DateTime.Now} - Registring installer '{message.InstallerName}'");
             _repository.CreateInstaller(message.InstallerName);
             _outports.ToList().ForEach(actor => actor.Tell(message));
         }

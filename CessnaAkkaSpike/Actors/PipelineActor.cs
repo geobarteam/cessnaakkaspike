@@ -24,16 +24,16 @@ namespace CessnaAkkaSpike.Actors
         {
 
             var registerReleaseActorRef =
-                Context.ActorOf(Props.Create(() => new RegisterReleaseActor(null, new Repository.Repository())), pipelineName + "RegisterReleaseActor");
+                Context.ActorOf(Props.Create(() => new RegisterReleaseActor(null, new Repository.Repository())), "RegisterReleaseActor");
             var deployToPrdActorRef =
-                Context.ActorOf(Props.Create(() => new DeployActor(null, "PRD")), pipelineName + "DeployToPRDActor");
+                Context.ActorOf(Props.Create(() => new DeployActor(null, "PRD")),  "DeployToPRDActor");
             var approvalForPrdActorRef =
-                Context.ActorOf(Props.Create(() => new ApprovalActor(new []{ deployToPrdActorRef })), pipelineName + "ApprovalForPRDActor");
+                Context.ActorOf(Props.Create(() => new ApprovalActor(new []{ deployToPrdActorRef })), "ApprovalForPRDActor");
             var deployToDvlRepositoryRef = 
-                Context.ActorOf(Props.Create(() => new DeployActor(new []{ approvalForPrdActorRef }, "DVL")), pipelineName + "DeployToDvlRepository");
+                Context.ActorOf(Props.Create(() => new DeployActor(new []{ approvalForPrdActorRef }, "DVL")), "DeployToDvlRepository");
             var registerInstallerActorRef =
                 Context.ActorOf(Props.Create(() => new RegisterInstallerActor(
-                        new []{ deployToDvlRepositoryRef }, new Repository.Repository())), pipelineName + "RegisterInstallerActor");
+                        new []{ deployToDvlRepositoryRef }, new Repository.Repository())), "RegisterInstallerActor");
 
             var pipeline = new List<IActorRef>();
             pipeline.Add(registerInstallerActorRef);
@@ -43,6 +43,15 @@ namespace CessnaAkkaSpike.Actors
             pipeline.Add(registerReleaseActorRef);
 
             return pipeline;
+        }
+
+        protected override SupervisorStrategy SupervisorStrategy()
+        {
+            return new OneForOneStrategy(
+                maxNrOfRetries: 10,
+                withinTimeRange: TimeSpan.FromMinutes(1),
+                localOnlyDecider: ex => Directive.Resume);
+
         }
 
         #region Lifecycle hooks

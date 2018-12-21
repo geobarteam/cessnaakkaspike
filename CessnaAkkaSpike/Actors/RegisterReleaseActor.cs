@@ -23,6 +23,8 @@ namespace CessnaAkkaSpike.Actors
 
         private void HandleRegisterReleaseActor(PipelineMessage message)
         {
+
+            ColorConsole.WriteMagenta($"{DateTime.Now} - Register installer '{message.InstallerName}' in release '{message.PipelineName}'");
             _repository.RegisterInstallerinRelease(message.InstallerName);
         }
     }

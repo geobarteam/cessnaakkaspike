@@ -23,8 +23,11 @@ namespace CessnaAkkaSpike.Actors
 
         private void HandleDeploy(PipelineMessage message)
         {
-            Thread.Sleep(TimeSpan.FromMinutes(1));
+            ColorConsole.WriteMagenta($"{DateTime.Now} - Starting deployment for installer '{message.InstallerName}'");
+            Thread.Sleep(TimeSpan.FromSeconds(10));
             _outports.ToList().ForEach(actor => actor.Tell(message));
         }
+
+       
     }
 }
