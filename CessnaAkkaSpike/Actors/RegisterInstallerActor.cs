@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Akka.Actor;
+using CessnaAkkaSpike.Messages;
 using CessnaAkkaSpike.Repository;
 
 namespace CessnaAkkaSpike.Actors
@@ -16,7 +18,14 @@ namespace CessnaAkkaSpike.Actors
         {
             _outports = Outports;
             _repository = repository;
+
+            Receive<PipelineMessage>(message => HandleRegisterInstallerActor(message));
         }
 
+        private void HandleRegisterInstallerActor(PipelineMessage message)
+        {
+            _repository.CreateInstaller(message.InstallerName);
+            _outports.ToList().ForEach(actor => actor.Tell(message));
+        }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Akka.Actor;
+using CessnaAkkaSpike.Messages;
 using CessnaAkkaSpike.Repository;
 
 namespace CessnaAkkaSpike.Actors
@@ -15,6 +17,13 @@ namespace CessnaAkkaSpike.Actors
         {
             _outports = Outports;
             _repository = repository;
+
+            Receive<PipelineMessage>(message => HandleRegisterReleaseActor(message));
+        }
+
+        private void HandleRegisterReleaseActor(PipelineMessage message)
+        {
+            _repository.RegisterInstallerinRelease(message.InstallerName);
         }
     }
 }

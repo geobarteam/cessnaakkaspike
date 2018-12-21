@@ -28,7 +28,7 @@ namespace CessnaAkkaSpike
                     string tenantName = command.Split(',')[1];
                     string installerName = command.Split(',')[2];
 
-                    var message = new StartPipelineMessage(tenantName, installerName);
+                    var message = new PipelineMessage(tenantName, installerName);
                     CessnaActorSystem.ActorSelection("/user/ProcessManager").Tell(message);
                 }
 

@@ -1,24 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using Akka.Actor;
+using CessnaAkkaSpike.Messages;
 
 namespace CessnaAkkaSpike.Actors
 {
     public class PipelineActor : ReceiveActor
     {
         public string PipelineName { get; }
-
+        public IList<IActorRef> Pipeline { get; private set; }
         public PipelineActor(string pipelineName)
         {
             PipelineName = pipelineName;
-            BuildPipeline(pipelineName);
-
+            this.Pipeline = BuildPipeline(pipelineName);
+            Receive<PipelineMessage>(message => this.Pipeline.First().Tell(message));
 
         }
 
-        public static void BuildPipeline(string pipelineName)
+        public static IList<IActorRef> BuildPipeline(string pipelineName)
         {
+
             var registerReleaseActorRef =
                 Context.ActorOf(Props.Create(() => new RegisterReleaseActor(null, new Repository.Repository())), pipelineName + "RegisterReleaseActor");
             var deployToPrdActorRef =
@@ -31,7 +35,14 @@ namespace CessnaAkkaSpike.Actors
                 Context.ActorOf(Props.Create(() => new RegisterInstallerActor(
                         new []{ deployToDvlRepositoryRef }, new Repository.Repository())), pipelineName + "RegisterInstallerActor");
 
+            var pipeline = new List<IActorRef>();
+            pipeline.Add(registerInstallerActorRef);
+            pipeline.Add(deployToDvlRepositoryRef);
+            pipeline.Add(approvalForPrdActorRef);
+            pipeline.Add(deployToPrdActorRef);
+            pipeline.Add(registerReleaseActorRef);
 
+            return pipeline;
         }
 
         #region Lifecycle hooks

@@ -13,7 +13,7 @@ namespace CessnaAkkaSpike.Actors
         {
             _pipelines = new Dictionary<string, IActorRef>();
 
-            Receive<StartPipelineMessage>(message =>
+            Receive<PipelineMessage>(message =>
             {
                 CreatePipeLineIfNotExist(message.PipelineName);
                 IActorRef pipelineActorRef = _pipelines[message.PipelineName];
