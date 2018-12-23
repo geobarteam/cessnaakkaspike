@@ -1,0 +1,16 @@
+﻿akka {
+
+
+  actor {
+      provider = remote
+      }
+  }
+}
+
+remote {
+        dot-netty.tcp {
+            port = 0 # bound to a dynamic port assigned by the OS
+            hostname = localhost
+        }
+    }
+}

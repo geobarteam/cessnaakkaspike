@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace CessnaAkkaSpike
+namespace CessnaAkkaSpike.Application
 {
     public static class ColorConsole
     {

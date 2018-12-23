@@ -1,7 +1,10 @@
 ﻿using System;
+using System.IO;
 using Akka.Actor;
-using CessnaAkkaSpike.Actors;
-using CessnaAkkaSpike.Messages;
+using Akka.Configuration;
+using CessnaAkkaSpike.Application;
+using CessnaAkkaSpike.Application.Actors;
+using CessnaAkkaSpike.Application.Messages;
 
 namespace CessnaAkkaSpike
 {
@@ -10,8 +13,11 @@ namespace CessnaAkkaSpike
         private static ActorSystem CessnaActorSystem;
         static void Main(string[] args)
         {
+            var hoconString = File.ReadAllText(".\\config.hocon");
+            var cfg = ConfigurationFactory.ParseString(hoconString);
+
             ColorConsole.WriteLineBlue("Starting CessnaActorSystem");
-            CessnaActorSystem = ActorSystem.Create("CesssnaActorSystem");
+            CessnaActorSystem = ActorSystem.Create("CesssnaActorSystem", cfg);
 
             ColorConsole.WriteLineBlue("Creating ProcessManager");
             CessnaActorSystem.ActorOf(Props.Create<ProcessManagerActor>(), "ProcessManager");

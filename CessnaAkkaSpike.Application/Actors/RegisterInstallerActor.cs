@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using Akka.Actor;
-using CessnaAkkaSpike.Messages;
-using CessnaAkkaSpike.Repository;
+using CessnaAkkaSpike.Application.Messages;
+using CessnaAkkaSpike.Application.Repository;
 
-namespace CessnaAkkaSpike.Actors
+namespace CessnaAkkaSpike.Application.Actors
 {
     public class RegisterInstallerActor : ReceiveActor
     {

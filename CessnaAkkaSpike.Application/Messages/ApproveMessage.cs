@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CessnaAkkaSpike.Messages
+﻿namespace CessnaAkkaSpike.Application.Messages
 {
     public class ApproveMessage
     {

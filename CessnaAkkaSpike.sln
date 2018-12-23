@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28010.2036
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CessnaAkkaSpike", "CessnaAkkaSpike\CessnaAkkaSpike.csproj", "{F2048BFE-2F46-4E23-B15F-9C6F48882C31}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CessnaAkkaSpike", "CessnaAkkaSpike\CessnaAkkaSpike.csproj", "{F2048BFE-2F46-4E23-B15F-9C6F48882C31}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CessnaAkkaSpike.Application", "CessnaAkkaSpike.Application\CessnaAkkaSpike.Application.csproj", "{B46DCAA7-2E8A-40AE-98B7-D4C26829178C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{F2048BFE-2F46-4E23-B15F-9C6F48882C31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2048BFE-2F46-4E23-B15F-9C6F48882C31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2048BFE-2F46-4E23-B15F-9C6F48882C31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B46DCAA7-2E8A-40AE-98B7-D4C26829178C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B46DCAA7-2E8A-40AE-98B7-D4C26829178C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B46DCAA7-2E8A-40AE-98B7-D4C26829178C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B46DCAA7-2E8A-40AE-98B7-D4C26829178C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

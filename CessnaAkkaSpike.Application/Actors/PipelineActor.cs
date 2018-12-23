@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
 using Akka.Actor;
-using CessnaAkkaSpike.Messages;
+using CessnaAkkaSpike.Application.Messages;
 
-namespace CessnaAkkaSpike.Actors
+namespace CessnaAkkaSpike.Application.Actors
 {
     public class PipelineActor : ReceiveActor
     {
