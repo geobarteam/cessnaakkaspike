@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Akka.Actor;
+using Akka.Routing;
 using CessnaAkkaSpike.Application.Messages;
 
 namespace CessnaAkkaSpike.Application.Actors
@@ -22,7 +23,9 @@ namespace CessnaAkkaSpike.Application.Actors
         {
 
             var registerReleaseActorRef =
-                Context.ActorOf(Props.Create(() => new RegisterReleaseActor(null, new Repository.Repository())), "RegisterReleaseActor");
+                Context.ActorOf(Props.Create(() => new RegisterReleaseActor(null, new Repository.Repository()))
+                    .WithRouter(FromConfig.Instance),
+                    "RegisterReleaseActor");
             var deployToPrdActorRef =
                 Context.ActorOf(Props.Create(() => new DeployActor(null, "PRD")),  "DeployToPRDActor");
             var approvalForPrdActorRef =
