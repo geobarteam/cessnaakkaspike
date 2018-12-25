@@ -6,7 +6,7 @@ using CessnaAkkaSpike.Application;
 using CessnaAkkaSpike.Application.Actors;
 using CessnaAkkaSpike.Application.Messages;
 
-namespace CessnaAkkaSpike.Host
+namespace CessnaAkkaSpike.Host2
 {
     class Program
     {
@@ -61,7 +61,7 @@ namespace CessnaAkkaSpike.Host
                 {
                     ColorConsole.WriteMagenta(e.Message);
                 }
-               
+
             } while (true);
 
         }
