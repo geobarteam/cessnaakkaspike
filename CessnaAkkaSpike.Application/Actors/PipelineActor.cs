@@ -23,9 +23,7 @@ namespace CessnaAkkaSpike.Application.Actors
         {
 
             var registerReleaseActorRef =
-                Context.ActorOf(Props.Create(() => new RegisterReleaseActor(null, new Repository.Repository()))
-                    .WithRouter(FromConfig.Instance),
-                    "RegisterReleaseActor");
+                Context.ActorOf(Props.Create(() => new RegisterReleaseActor(null, new Repository.Repository())), "RegisterReleaseActor");
             var deployToPrdActorRef =
                 Context.ActorOf(Props.Create(() => new DeployActor(null, "PRD")),  "DeployToPRDActor");
             var approvalForPrdActorRef =
