@@ -6,7 +6,7 @@ using CessnaAkkaSpike.Application.Messages;
 
 namespace CessnaAkkaSpike.Application.Actors
 {
-    public class ApprovalActor:AtLeastOnceDeliveryWithSnapshotReceiveActor<PipelineMessage>
+    public class ApprovalActor:AtLeastOnceDeliveryWithSnapshotReceiveActor<ReliableDeliveryEnvelope<PipelineMessage>>
     {
         private readonly IActorRef[] _outports;
         private Dictionary<string, PipelineMessage> _messagesToBeApproved;
@@ -26,20 +26,21 @@ namespace CessnaAkkaSpike.Application.Actors
             _outports.ToList().ForEach(actor =>
                 Deliver(actor.Path, messageId => 
                     new ReliableDeliveryEnvelope<PipelineMessage>(
-                        new PipelineMessage(null, message.InstallerName), messageId)));
+                        new PipelineMessage(message.PipelineName, message.InstallerName), messageId)));
         }
 
-        protected override void HandleCommand(PipelineMessage message)
+        protected override void HandleCommand(ReliableDeliveryEnvelope<PipelineMessage> message)
         {
-            if (!_messagesToBeApproved.ContainsKey(message.InstallerName))
+            if (!_messagesToBeApproved.ContainsKey(message.Message.InstallerName))
             {
-                _messagesToBeApproved.Add(message.InstallerName, message);
+                _messagesToBeApproved.Add(message.Message.InstallerName, message.Message);
             }
 
-            ColorConsole.WriteMagenta($"{DateTime.Now} - Approval waiting for '{ message.InstallerName }'");
+            ColorConsole.WriteMagenta($"{DateTime.Now} - Approval waiting for '{ message.Message.InstallerName }'");
+            Sender.Tell(new ReliableDeliveryAck(message.MessageId));
         }
 
-       
+
 
         #region Lifecycle hooks
         protected override void PreStart()
@@ -51,6 +52,8 @@ namespace CessnaAkkaSpike.Application.Actors
         {
             ColorConsole.WriteLineGreen("Approval PostStop");
         }
+
+       
 
         protected override void PreRestart(Exception reason, object message)
         {

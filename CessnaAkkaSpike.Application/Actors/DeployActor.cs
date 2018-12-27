@@ -6,7 +6,7 @@ using CessnaAkkaSpike.Application.Messages;
 
 namespace CessnaAkkaSpike.Application.Actors
 {
-    public class DeployActor: ReceiveActor
+    public class DeployActor: AtLeastOnceDeliveryWithSnapshotReceiveActor<ReliableDeliveryEnvelope<PipelineMessage>>
     {
         private readonly IActorRef[] _outports;
         private readonly string _environment;
@@ -16,18 +16,17 @@ namespace CessnaAkkaSpike.Application.Actors
             _outports = Outports;
             _environment = environment;
 
-            Receive<ReliableDeliveryEnvelope<PipelineMessage>>(message => HandleDeploy(message));
+           
         }
 
-        private void HandleDeploy(ReliableDeliveryEnvelope<PipelineMessage> message)
+
+        protected override void HandleCommand(ReliableDeliveryEnvelope<PipelineMessage> message)
         {
-            
-            ColorConsole.WriteMagenta($"{DateTime.Now} - Starting deployment for installer '{message.Message.InstallerName}'");
+            ColorConsole.WriteMagenta($"{DateTime.Now} - Starting deployment in {_environment} for installer '{message.Message.InstallerName}'");
             Thread.Sleep(TimeSpan.FromSeconds(5));
-            _outports.ToList().ForEach(actor => actor.Tell(message.Message));
+            _outports.ToList().ForEach(actor =>
+                Deliver(actor.Path, messageId => new ReliableDeliveryEnvelope<PipelineMessage>(message.Message, messageId)));
             Sender.Tell(new ReliableDeliveryAck(message.MessageId));
         }
-
-       
     }
 }
