@@ -59,8 +59,8 @@ namespace CessnaAkkaSpike.Application
                         string tenantName = command.Split(',')[1];
                         string installerName = command.Split(',')[2];
 
-                        var message = new ApproveMessage(installerName);
-                        CessnaActorSystem.ActorSelection("/user/ProcessManager/Pipeline" + tenantName + "/ApprovalForPRDActor").Tell(message);
+                        var message = new ApproveMessage(tenantName, installerName);
+                        CessnaActorSystem.ActorSelection("/user/ProcessManager").Tell(message);
                     }
 
                     if (command == "exit")

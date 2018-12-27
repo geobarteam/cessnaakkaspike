@@ -18,7 +18,14 @@ namespace CessnaAkkaSpike.Application.Actors
                 IActorRef pipelineActorRef = _pipelines[message.PipelineName];
                 pipelineActorRef.Tell(message);
             });
+            Receive<ApproveMessage>(message =>
+            {
+                CreatePipeLineIfNotExist(message.PipelineName);
+                IActorRef pipelineActorRef = _pipelines[message.PipelineName];
+                pipelineActorRef.Tell(message);
+            });
         }
+
 
         public void CreatePipeLineIfNotExist(string pipelineName)
         {

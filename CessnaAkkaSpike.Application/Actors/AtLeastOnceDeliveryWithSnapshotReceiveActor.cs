@@ -8,7 +8,7 @@ using CessnaAkkaSpike.Application.Messages;
 
 namespace CessnaAkkaSpike.Application.Actors
 {
-    public abstract class AtLeastOnceDeliveryWithSnapshotReceiveActorFilter<T> : AtLeastOnceDeliveryReceiveActor
+    public abstract class AtLeastOnceDeliveryWithSnapshotReceiveActor<T> : AtLeastOnceDeliveryReceiveActor
     {
         public override string PersistenceId => Context.Self.Path.Name;
         private int _counter = 0;
@@ -17,11 +17,9 @@ namespace CessnaAkkaSpike.Application.Actors
 
         private class CleanSnapshots { }
 
-        private readonly IActorRef[] _outports;
 
-        public AtLeastOnceDeliveryWithSnapshotReceiveActorFilter(IActorRef[] outports)
+        public AtLeastOnceDeliveryWithSnapshotReceiveActor()
         {
-            _outports = outports;
 
             Recover<SnapshotOffer>(offer => offer.Snapshot is Akka.Persistence.AtLeastOnceDeliverySnapshot, offer =>
             {
@@ -32,10 +30,7 @@ namespace CessnaAkkaSpike.Application.Actors
             Command<T>(message =>
             {
                 HandleCommand(message);
-
-                _outports.ToList().ForEach(actor =>
-                    Deliver(actor.Path, messageId => new ReliableDeliveryEnvelope<T>(message, messageId)));
-
+                
                 // save the full state of the at least once delivery actor
                 // so we don't lose any messages upon crash
                 SaveSnapshot(GetDeliverySnapshot());

@@ -2,11 +2,13 @@
 {
     public class ApproveMessage
     {
-        public ApproveMessage(string installerName)
+        public ApproveMessage(string pipelineName, string installerName)
         {
+            PipelineName = pipelineName;
             InstallerName = installerName;
         }
 
+        public string PipelineName { get; }
         public string InstallerName { get; }
     }
 }

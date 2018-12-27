@@ -15,14 +15,15 @@ namespace CessnaAkkaSpike.Application.Actors
             _outports = Outports;
             _repository = repository;
 
-            Receive<PipelineMessage>(message => HandleRegisterReleaseActor(message));
+            Receive<ReliableDeliveryEnvelope<PipelineMessage>>(message => HandleRegisterReleaseActor(message));
         }
 
-        private void HandleRegisterReleaseActor(PipelineMessage message)
+        private void HandleRegisterReleaseActor(ReliableDeliveryEnvelope<PipelineMessage> message)
         {
 
-            ColorConsole.WriteMagenta($"{DateTime.Now} - Register installer '{message.InstallerName}' in release '{message.PipelineName}'");
-            _repository.RegisterInstallerinRelease(message.InstallerName);
+            ColorConsole.WriteMagenta($"{DateTime.Now} - Register installer '{message.Message.InstallerName}' in release '{message.Message.PipelineName}'");
+            _repository.RegisterInstallerinRelease(message.Message.InstallerName);
+            Sender.Tell(new ReliableDeliveryAck(message.MessageId));
         }
     }
 }

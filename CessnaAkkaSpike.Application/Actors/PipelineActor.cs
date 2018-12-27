@@ -16,6 +16,7 @@ namespace CessnaAkkaSpike.Application.Actors
             PipelineName = pipelineName;
             this.Pipeline = BuildPipeline(pipelineName);
             Receive<PipelineMessage>(message => this.Pipeline.First().Tell(message));
+            Receive<ApproveMessage>(message => this.Pipeline.First(n=>n.Path.Name == "ApprovalForPRDActor").Tell(message));
 
         }
 
@@ -25,7 +26,7 @@ namespace CessnaAkkaSpike.Application.Actors
             var registerReleaseActorRef =
                 Context.ActorOf(Props.Create(() => new RegisterReleaseActor(null, new Repository.Repository())), "RegisterReleaseActor");
             var deployToPrdActorRef =
-                Context.ActorOf(Props.Create(() => new DeployActor(null, "PRD")),  "DeployToPRDActor");
+                Context.ActorOf(Props.Create(() => new DeployActor(new [] { registerReleaseActorRef }, "PRD")),  "DeployToPRDActor");
             var approvalForPrdActorRef =
                 Context.ActorOf(Props.Create(() => new ApprovalActor(new []{ deployToPrdActorRef })), "ApprovalForPRDActor");
             var deployToDvlRepositoryRef = 
