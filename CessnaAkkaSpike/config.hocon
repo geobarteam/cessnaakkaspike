@@ -23,6 +23,14 @@
 cluster {
   seed-nodes = ["akka.tcp://CesssnaActorSystem@localhost:8081", "akka.tcp://CesssnaActorSystem@localhost:8082"]
   }
+
+persistence{
+	at-least-once-delivery{
+		redeliver-interval = 10s
+	}
+  }
+
 }
+
 
 }

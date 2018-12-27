@@ -11,7 +11,7 @@ namespace CessnaAkkaSpike.Application.Actors
         public ProcessManagerActor()
         {
             _pipelines = new Dictionary<string, IActorRef>();
-
+            CreatePipeLineIfNotExist("flx");
             Receive<PipelineMessage>(message =>
             {
                 CreatePipeLineIfNotExist(message.PipelineName);

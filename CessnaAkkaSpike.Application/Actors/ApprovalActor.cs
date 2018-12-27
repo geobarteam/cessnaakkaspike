@@ -31,7 +31,11 @@ namespace CessnaAkkaSpike.Application.Actors
 
         private void HandlePipelineMessage(PipelineMessage message)
         {
-            _messagesToBeApproved.Add(message.InstallerName, message);
+            if (!_messagesToBeApproved.ContainsKey(message.InstallerName))
+            {
+                _messagesToBeApproved.Add(message.InstallerName, message);
+            }
+            
             ColorConsole.WriteMagenta($"{DateTime.Now} - Approval waiting for '{ message.InstallerName }'");
         }
     }

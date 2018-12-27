@@ -16,14 +16,16 @@ namespace CessnaAkkaSpike.Application.Actors
             _outports = Outports;
             _environment = environment;
 
-            Receive<PipelineMessage>(message => HandleDeploy(message));
+            Receive<ReliableDeliveryEnvelope<PipelineMessage>>(message => HandleDeploy(message));
         }
 
-        private void HandleDeploy(PipelineMessage message)
+        private void HandleDeploy(ReliableDeliveryEnvelope<PipelineMessage> message)
         {
-            ColorConsole.WriteMagenta($"{DateTime.Now} - Starting deployment for installer '{message.InstallerName}'");
-            Thread.Sleep(TimeSpan.FromSeconds(10));
-            _outports.ToList().ForEach(actor => actor.Tell(message));
+            
+            ColorConsole.WriteMagenta($"{DateTime.Now} - Starting deployment for installer '{message.Message.InstallerName}'");
+            Thread.Sleep(TimeSpan.FromSeconds(5));
+            _outports.ToList().ForEach(actor => actor.Tell(message.Message));
+            Sender.Tell(new ReliableDeliveryAck(message.MessageId));
         }
 
        
