@@ -18,9 +18,7 @@ namespace CessnaAkkaSpike.Application.Actors
             Command<ApproveMessage>(message => HandleApproveMessage(message));
             
         }
-
-       
-
+        
         private void HandleApproveMessage(ApproveMessage message)
         {
             var pipelineMessage = _messagesToBeApproved[message.InstallerName];
@@ -31,7 +29,6 @@ namespace CessnaAkkaSpike.Application.Actors
                         new PipelineMessage(null, message.InstallerName), messageId)));
         }
 
-        
         protected override void HandleCommand(PipelineMessage message)
         {
             if (!_messagesToBeApproved.ContainsKey(message.InstallerName))
@@ -41,5 +38,33 @@ namespace CessnaAkkaSpike.Application.Actors
 
             ColorConsole.WriteMagenta($"{DateTime.Now} - Approval waiting for '{ message.InstallerName }'");
         }
+
+       
+
+        #region Lifecycle hooks
+        protected override void PreStart()
+        {
+            ColorConsole.WriteLineGreen("Approval PreStart");
+        }
+
+        protected override void PostStop()
+        {
+            ColorConsole.WriteLineGreen("Approval PostStop");
+        }
+
+        protected override void PreRestart(Exception reason, object message)
+        {
+            ColorConsole.WriteLineGreen("Approval PreRestart because: " + reason);
+
+            base.PreRestart(reason, message);
+        }
+
+        protected override void PostRestart(Exception reason)
+        {
+            ColorConsole.WriteLineGreen("Approval PostRestart because: " + reason);
+
+            base.PostRestart(reason);
+        }
+        #endregion
     }
 }

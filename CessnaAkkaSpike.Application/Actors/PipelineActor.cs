@@ -30,7 +30,7 @@ namespace CessnaAkkaSpike.Application.Actors
             var approvalForPrdActorRef =
                 Context.ActorOf(Props.Create(() => new ApprovalActor(new []{ deployToPrdActorRef })), "ApprovalForPRDActor");
             var deployToDvlRepositoryRef = 
-                Context.ActorOf(Props.Create(() => new DeployActor(new []{ approvalForPrdActorRef }, "DVL")), "DeployToDvlRepository");
+                Context.ActorOf(Props.Create(() => new DeployActor(new []{ approvalForPrdActorRef }, "DVL")), "DeployToDvlActor");
             var registerInstallerActorRef =
                 Context.ActorOf(Props.Create(() => new RegisterInstallerActor(
                         new []{ deployToDvlRepositoryRef }, new Repository.Repository())), "RegisterInstallerActor");
@@ -51,8 +51,8 @@ namespace CessnaAkkaSpike.Application.Actors
                 maxNrOfRetries: 10,
                 withinTimeRange: TimeSpan.FromMinutes(1),
                 localOnlyDecider: ex => Directive.Resume);
-
         }
+
 
         #region Lifecycle hooks
         protected override void PreStart()
