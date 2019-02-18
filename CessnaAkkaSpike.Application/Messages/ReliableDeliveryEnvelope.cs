@@ -27,6 +27,30 @@ namespace CessnaAkkaSpike.Application.Messages
         public long MessageId { get; private set; }
     }
 
+    public interface IEvent
+    {
+
+    }
+
+    public class MsgSent<TMessage> : IEvent
+    {
+        public MsgSent(TMessage message)
+        {
+            Message = message;
+        }
+
+        public TMessage Message { get; }
+    }
+
+    public class MsgConfirmed : IEvent
+    {
+        public MsgConfirmed(long deliveryId)
+        {
+            DeliveryId = deliveryId;
+        }
+
+        public long DeliveryId { get; }
+    }
 
 
 }

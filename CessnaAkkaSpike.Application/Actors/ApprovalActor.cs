@@ -74,5 +74,6 @@ namespace CessnaAkkaSpike.Application.Actors
             base.PostRestart(reason);
         }
         #endregion
+
     }
 }

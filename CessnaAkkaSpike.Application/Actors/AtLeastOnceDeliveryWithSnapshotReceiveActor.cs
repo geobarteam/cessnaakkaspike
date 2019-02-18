@@ -8,7 +8,7 @@ using CessnaAkkaSpike.Application.Messages;
 
 namespace CessnaAkkaSpike.Application.Actors
 {
-    public abstract class AtLeastOnceDeliveryWithSnapshotReceiveActor<T> : AtLeastOnceDeliveryReceiveActor
+    public abstract class AtLeastOnceDeliveryWithSnapshotReceiveActor<T> :AtLeastOnceDeliveryReceiveActor
     {
         public override string PersistenceId => Context.Self.Path.Name;
         private int _counter = 0;
