@@ -9,7 +9,7 @@ using CessnaAkkaSpike.Application.Repository;
 
 namespace CessnaAkkaSpike.Application.Actors
 {
-    public class RegisterInstallerActor : AtLeastOnceDeliveryWithSnapshotReceiveActor<PipelineMessage>
+    public class RegisterInstallerActor : AtLeastOnceDeliveryReceiveActorWithoutSnapshot<PipelineMessage>
     {
         private readonly IRepository _repository;
 

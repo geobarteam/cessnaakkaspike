@@ -6,7 +6,7 @@ using CessnaAkkaSpike.Application.Messages;
 
 namespace CessnaAkkaSpike.Application.Actors
 {
-    public class DeployActor: AtLeastOnceDeliveryWithSnapshotReceiveActor<ReliableDeliveryEnvelope<PipelineMessage>>
+    public class DeployActor: AtLeastOnceDeliveryReceiveActorWithoutSnapshot<ReliableDeliveryEnvelope<PipelineMessage>>
     {
         private readonly IActorRef[] _outports;
         private readonly string _environment;

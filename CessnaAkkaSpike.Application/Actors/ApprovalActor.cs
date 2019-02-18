@@ -7,7 +7,7 @@ using CessnaAkkaSpike.Application.Repository;
 
 namespace CessnaAkkaSpike.Application.Actors
 {
-    public class ApprovalActor:AtLeastOnceDeliveryWithSnapshotReceiveActor<ReliableDeliveryEnvelope<PipelineMessage>>
+    public class ApprovalActor:AtLeastOnceDeliveryReceiveActorWithoutSnapshot<ReliableDeliveryEnvelope<PipelineMessage>>
     {
         private readonly IActorRef[] _outports;
         private readonly IRepository _repository;
