@@ -10,7 +10,7 @@ namespace CessnaAkkaSpike.Application.Actors
 {
     public abstract class AtLeastOnceDeliveryWithSnapshotReceiveActor<T> :AtLeastOnceDeliveryReceiveActor
     {
-        public override string PersistenceId => Context.Self.Path.Name;
+        public override string PersistenceId => Context.Self.Path.ToString();
         private int _counter = 0;
 
         private ICancelable _recurringSnapshotCleanup;

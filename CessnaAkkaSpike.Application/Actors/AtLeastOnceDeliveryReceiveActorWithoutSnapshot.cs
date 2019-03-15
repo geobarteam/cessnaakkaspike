@@ -8,7 +8,7 @@ namespace CessnaAkkaSpike.Application.Actors
 {
     public abstract class AtLeastOnceDeliveryReceiveActorWithoutSnapshot<T>: AtLeastOnceDeliveryReceiveActor
     {
-        public override string PersistenceId =>  Context.Self.Path.Name;
+        public override string PersistenceId => Context.Self.Path.ToString();
 
         public AtLeastOnceDeliveryReceiveActorWithoutSnapshot()
         {
